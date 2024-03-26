@@ -15,7 +15,7 @@ BB    BB    LLL        OOO  OOO       KKK
 BB   BBB    LLL        OOO  OOO        KKK
 BBBBBBB      LLLLLLLL  OOOOOOOO         KKK
 BBBBBB        LLLLLLL   OOOOOO           KKK
-
+*
 *
 * Its a Blok Chain......get it XD
 */
