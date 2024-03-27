@@ -15,7 +15,7 @@ describe('BlokCharms Contract', function () {
 
   describe('Minting', function () {
     it('Should mint a new Blok and assign a color', async function () {
-      const toMint = 2;
+      const toMint = 42;
       await expect(blokCharms.connect(addr1).mint(toMint, { value: ethers.parseEther(`${(0.1 * toMint)}`) }))
         .to.emit(blokCharms, 'Transfer') // Checking for the Transfer event as an example
         .withArgs(ethers.ZeroAddress, addr1.address, toMint);
