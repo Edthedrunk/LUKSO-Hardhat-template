@@ -44,12 +44,12 @@ contract BlokCharms is ERC721Enumerable, ReentrancyGuard, Ownable {
 
     mapping(uint256 => string) public tokenColors;
 
-    constructor() ERC721("BlokCharms", "BLOK") {
+  constructor() ERC721("BlokCharms", "BLOK") {
         colorSupplies.push(ColorSupply("Pink", 1319));
-        colorSupplies.push(ColorSupply("Blue", 1764));
-        colorSupplies.push(ColorSupply("Lime", 2829));
-        colorSupplies.push(ColorSupply("Orange", 3045));
-        colorSupplies.push(ColorSupply("Red", 5002));
+        colorSupplies.push(ColorSupply("Gold", 1764));
+        colorSupplies.push(ColorSupply("Blue", 2829));
+        colorSupplies.push(ColorSupply("Lime", 3045));
+        colorSupplies.push(ColorSupply("Orange", 5002));
         colorSupplies.push(ColorSupply("Black", 13986));
         colorSupplies.push(ColorSupply("White", 13986));
         // Add other colors similarly
@@ -78,8 +78,16 @@ contract BlokCharms is ERC721Enumerable, ReentrancyGuard, Ownable {
         return uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender))) % colorSupplies.length;
     }
 
-    function teamMint() external onlyOwner {
-        // Team minting logic here
+    function teamMint(address to, uint256 amount) public onlyOwner {
+        require(totalMinted + amount <= MAX_SUPPLY, "Exceeds maximum supply");
+        require(amount <= TEAM_MINT_AMOUNT, "Exceeds team mint amount");
+        
+        for (uint256 i = 0; i < amount; i++) {
+            uint256 tokenId = totalSupply() + 1;
+            _mint(to, tokenId);
+            // Assuming team mints do not require color assignment or decrement color supply
+            totalMinted += 1;
+        }
     }
 
     // Additional functions like withdraw, setColorSupply, getTokenColor, etc.
