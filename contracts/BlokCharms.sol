@@ -1,28 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-/*
-*
-
-BBBBBB      LLL         OOOOOO           KKK
-BBBBBBB     LLL        OOOOOOOO         KKK
-BB   BB     LLL        OOO  OOO        KKK
-BB   BB     LLL        OOO  OOO       KKK
-BBBBBB      LLL        OOO  OOO      KKK
-BBBBBBB     LLL        OOO  OOO     KKK
-BB   BBB    LLL        OOO  OOO      KKK
-BB    BB    LLL        OOO  OOO       KKK
-BB   BBB    LLL        OOO  OOO        KKK
-BBBBBBB      LLLLLLLL  OOOOOOOO         KKK
-BBBBBB        LLLLLLL   OOOOOO           KKK
-
-*
-* Its a Blok Chain......get it XD
-*/
-/// @author EdtheDrunk
-/// Material mainly stolen from @CupCo and @Burnt Punx
-/// This contract is used to mint BLOK NFTs
-
+/** */
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
