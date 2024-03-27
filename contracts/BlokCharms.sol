@@ -34,28 +34,26 @@ contract BlokCharms is ERC721Enumerable, ReentrancyGuard, Ownable {
         // Add other colors similarly
     }
 
-    function mint(uint256 amount) public payable nonReentrant {
-        require(totalMinted + amount <= MAX_SUPPLY, "Exceeds maximum supply");
-        require(amount <= MAX_PUBLIC_MINT, "Exceeds maximum mint amount");
-        require(msg.value >= amount * MINT_PRICE, "Ether sent is not correct");
-        
-        for(uint256 i = 0; i < amount; i++) {
-            uint256 tokenId = totalSupply() + 1;
-            uint256 colorIndex = _randomColorIndex();
-            require(colorSupplies[colorIndex].supply > 0, "Color out of stock");
-            
-            _mint(msg.sender, tokenId);
-            tokenColors[tokenId] = colorSupplies[colorIndex].color;
-            colorSupplies[colorIndex].supply -= 1;
-            totalMinted += 1;
-        }
-    }
+   function mint(uint256 amount) public payable nonReentrant {
+    require(totalMinted + amount <= MAX_SUPPLY, "Exceeds maximum supply");
+    require(amount <= MAX_PUBLIC_MINT, "Exceeds maximum mint amount");
+    require(msg.value >= amount * MINT_PRICE, "Ether sent is not correct");
 
-    function _randomColorIndex() private view returns (uint256) {
-        // Random selection logic based on remaining supply
-        // Simplified for example purposes
-        return uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender))) % colorSupplies.length;
+    for (uint256 i = 0; i < amount; i++) {
+        uint256 tokenId = totalSupply() + 1;
+        uint256 colorIndex = _randomColorIndex(msg.sender);
+        require(colorSupplies[colorIndex].supply > 0, "Color out of stock");
+
+        _mint(msg.sender, tokenId);
+        tokenColors[tokenId] = colorSupplies[colorIndex].color;
+        colorSupplies[colorIndex].supply -= 1;
+        totalMinted += 1;
     }
+}
+
+function _randomColorIndex(address _address) private view returns (uint256) {
+    return uint256(keccak256(abi.encodePacked(block.prevrandao, block.timestamp, _address, totalMinted))) % colorSupplies.length;
+}
 
     function teamMint(address to, uint256 amount) public onlyOwner {
         require(totalMinted + amount <= MAX_SUPPLY, "Exceeds maximum supply");
