@@ -17,6 +17,7 @@ contract BlokCharms is ERC721Enumerable, ReentrancyGuard, Ownable {
     struct ColorSupply {
         string color;
         uint256 supply;
+        uint256 percentage; // Add percentage chance for each color
     }
 
     ColorSupply[] public colorSupplies;
@@ -24,13 +25,13 @@ contract BlokCharms is ERC721Enumerable, ReentrancyGuard, Ownable {
     mapping(uint256 => string) public tokenColors;
 
   constructor() ERC721("BlokCharms", "BLOK") {
-        colorSupplies.push(ColorSupply("Pink", 1319));
-        colorSupplies.push(ColorSupply("Gold", 1764));
-        colorSupplies.push(ColorSupply("Blue", 2829));
-        colorSupplies.push(ColorSupply("Lime", 3045));
-        colorSupplies.push(ColorSupply("Orange", 5002));
-        colorSupplies.push(ColorSupply("Black", 13986));
-        colorSupplies.push(ColorSupply("White", 13986));
+        colorSupplies.push(ColorSupply("Pink", 1319, 314));
+        colorSupplies.push(ColorSupply("Gold", 1764, 420));
+        colorSupplies.push(ColorSupply("Blue", 2829, 690));
+        colorSupplies.push(ColorSupply("Lime", 3045, 725));
+        colorSupplies.push(ColorSupply("Orange", 5002, 1191));
+        colorSupplies.push(ColorSupply("Black", 13986, 3330));
+        colorSupplies.push(ColorSupply("White", 13986, 3330));
         // Add other colors similarly
     }
 
@@ -51,9 +52,24 @@ contract BlokCharms is ERC721Enumerable, ReentrancyGuard, Ownable {
     }
 }
 
-function _randomColorIndex(address _address) private view returns (uint256) {
-    return uint256(keccak256(abi.encodePacked(block.prevrandao, block.timestamp, _address, totalMinted))) % colorSupplies.length;
-}
+  function _randomColorIndex(address _address) private view returns (uint256) {
+        uint256 rand = uint256(keccak256(abi.encodePacked(block.prevrandao, block.timestamp, _address, totalMinted)));
+        uint256 totalPercentage = 10000; // Sum of all percentages times 100 to allow for two decimal places
+        uint256 accumulativePercentage = 0;
+        uint256 selectedPercentage = rand % totalPercentage;
+
+        for (uint256 i = 0; i < colorSupplies.length; i++) {
+            if (colorSupplies[i].supply > 0) {
+                accumulativePercentage += colorSupplies[i].percentage;
+                if (selectedPercentage < accumulativePercentage) {
+                    return i;
+                }
+            }
+        }
+
+        revert("No colors available"); // Fallback in case no colors are available, adjust as needed
+    }
+
 
     function teamMint(address to, uint256 amount) public onlyOwner {
         require(totalMinted + amount <= MAX_SUPPLY, "Exceeds maximum supply");
