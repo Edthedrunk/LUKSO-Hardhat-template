@@ -6,6 +6,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 contract BlokCharms is ERC721Enumerable, ReentrancyGuard, Ownable {
     uint256 public constant MINT_PRICE = 0.1 ether;
@@ -83,6 +84,9 @@ contract BlokCharms is ERC721Enumerable, ReentrancyGuard, Ownable {
         }
     }
 
+function withdraw() external onlyOwner {
+        Address.sendValue(payable(msg.sender), address(this).balance);
+    }
     // Additional functions like withdraw, setColorSupply, getTokenColor, etc.
 }
 
