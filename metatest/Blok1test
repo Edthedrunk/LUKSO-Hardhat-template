@@ -1,0 +1,12 @@
+{
+  "name": "BlokCharm #1",
+  "description": "An exclusive BlokCharm NFT",
+  "image": "ipfs://bafybeiejfn2fahdhjazsvyvahd35226ppk64z6yhwwncwchhixkor7fkhm",
+  "attributes": [
+    {
+      "trait_type": "Color",
+      "value": "Pink"
+    }
+   
+  ]
+}
