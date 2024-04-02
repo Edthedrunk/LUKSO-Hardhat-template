@@ -15,7 +15,7 @@ contract OnChainMetadata {
         string index;
         string blokType;
         string encoded;
-    
+        string image;
     }
 
     mapping(string => Metadata) public metadata;
@@ -51,9 +51,9 @@ contract OnChainMetadata {
         });
     }
 
-    function updatePool(string memory _beanType) private {
-        totalMinted[_beanType]++;
-        if(totalMinted[_beanType] >= distribution[_beanType]) {
+    function updatePool(string memory _blokType) private {
+        totalMinted[_blokType]++;
+        if(totalMinted[_blokType] >= distribution[_blokType]) {
             for (uint256 i = 0; i < pool.length; i++) {
                 if (totalMinted[pool[i]] >= distribution[pool[i]]) {
                     pool[i] = pool[pool.length - 1];
@@ -63,7 +63,7 @@ contract OnChainMetadata {
         }
     }
 
-    function getRandomBean() internal returns (string memory) {
+    function getRandomBlok() internal returns (string memory) {
         uint256 _total = 0;
         for (uint256 i = 0; i < pool.length; i++) {
             _total += distribution[pool[i]] - totalMinted[pool[i]];
@@ -79,34 +79,34 @@ contract OnChainMetadata {
             if(_random >= range_a && _random < range_b && 
                 keccak256(abi.encodePacked(metadata[pool[i]].index)) == keccak256(abi.encodePacked(pool[i]))
             ) {
-                string memory _beanType = pool[i];
-                updatePool(_beanType);
-                return _beanType;
+                string memory _blokType = pool[i];
+                updatePool(_blokType);
+                return _blokType;
             }
             range_a = range_b;
         }
-        revert('BeanType not found');
+        revert('BlokType not found');
     }
 
-    function renderAndEncodeFromSVG(string memory _beanType) internal view returns (bytes memory) {
-        Metadata memory _metadata = metadata[_beanType];
-        bytes memory svg;
-        for(uint8 i = 0; i < paths.length; i++) {
-            svg = abi.encodePacked(svg, '<path d="', paths[i], '" class="', classes[i], '"/>');
-        }
-        svg = abi.encodePacked(
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2500 2500" width="600" height="600">',
-                '<style>.cls-1{fill:', _metadata.colors.cls_1,';}.cls-1,.cls-2,.cls-3{stroke-width:0px;}.cls-2{fill:', _metadata.colors.cls_2,';}.cls-3{fill:', _metadata.colors.cls_3,';}</style>',
-                svg,
-            '</svg>'
-        );
-        return abi.encodePacked(
-            'data:image/svg+xml;base64,',
-            Base64.encode(svg)
-        );
-    }
+  ///  function renderAndEncodeFromSVG(string memory _beanType) internal view returns (bytes memory) {
+       // Metadata memory _metadata = metadata[_beanType];
+       // bytes memory svg;
+    // for(uint8 i = 0; i < paths.length; i++) {
+        //    svg = abi.encodePacked(svg, '<path d="', paths[i], '" class="', classes[i], '"/>');
+       // }
+       // svg = abi.encodePacked(
+       //     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2500 2500" width="600" height="600">',
+       //         '<style>.cls-1{fill:', _metadata.colors.cls_1,';}.cls-1,.cls-2,.cls-3{stroke-width:0px;}.cls-2{fill:', _metadata.colors.cls_2,';}.cls-3{fill:', _metadata.colors.cls_3,';}</style>',
+       //         svg,
+       //     '</svg>'
+      //  );
+      //  return abi.encodePacked(
+      //      'data:image/svg+xml;base64,',
+      //      Base64.encode(svg)
+      //  );
+   // }
 
-    function getMetadataBytes(string memory _beanType) internal view returns (bytes memory, bytes memory) {
+    function getMetadataBytes(string memory _blokType) internal view returns (bytes memory, bytes memory) {
         Metadata memory _metadata = metadata[_beanType];
         bytes memory _encodedSVG = renderAndEncodeFromSVG(_beanType);
         bytes memory _rawMetadata = abi.encodePacked(
