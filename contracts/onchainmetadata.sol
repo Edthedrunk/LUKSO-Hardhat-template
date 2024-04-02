@@ -7,7 +7,7 @@ import { Base64 } from "@openzeppelin/contracts/utils/Base64.sol";
 contract OnChainMetadata {
     string[] public pool = ['pink', 'gold', 'blue', 'lime', 'orange',  'white', 'black'];
 
-    string[11] private classes = ["cls-2", "cls-1", "cls-3", "cls-1", "cls-2", "cls-1", "cls-3", "cls-1", "cls-2", "cls-1", "cls-2"];
+   // string[11] private classes = ["cls-2", "cls-1", "cls-3", "cls-1", "cls-2", "cls-1", "cls-3", "cls-1", "cls-2", "cls-1", "cls-2"];
     //string[11] private paths = [?];
     
     
@@ -106,17 +106,17 @@ contract OnChainMetadata {
       //  );
    // }
 
-    function getMetadataBytes(string memory _blokType) internal view returns (bytes memory, bytes memory) {
-        Metadata memory _metadata = metadata[_beanType];
-        bytes memory _encodedSVG = renderAndEncodeFromSVG(_beanType);
-        bytes memory _rawMetadata = abi.encodePacked(
-            '{"LSP4Metadata": {"name": "GM Bean","description": "Celebrate being UP early and boost your day with coffee.","links": [],"icon":[],"images": [[{"width": 600,"height": 600,',
-            '"url": "',_encodedSVG,'","verification": {"method": "keccak256(bytes)","data": "',_metadata.encoded,'"}}]],',
-            '"attributes":[{"key": "Type","value": "',_metadata.beanType,'","type": "string"}, {"key": "Variation","value": "',_metadata.variation,'","type": "string"}]}}'
-        );
-        return (_rawMetadata, abi.encodePacked(
-            "data:application/json;base64,",
-            Base64.encode(_rawMetadata)
-        ));
+   // function getMetadataBytes(string memory _blokType) internal view returns (bytes memory, bytes memory) {
+  //      Metadata memory _metadata = metadata[_blokType];
+  //      bytes memory _encodedSVG = renderAndEncodeFromSVG(_beanType);
+ //       bytes memory _rawMetadata = abi.encodePacked(
+ //           '{"LSP4Metadata": {"name": "GM Bean","description": "Celebrate being UP early and boost your day with coffee.","links": [],"icon":[],"images": [[{"width": 600,"height": 600,',
+ //           '"url": "',_encodedSVG,'","verification": {"method": "keccak256(bytes)","data": "',_metadata.encoded,'"}}]],',
+//'"attributes":[{"key": "Type","value": "',_metadata.beanType,'","type": "string"}, {"key": "Variation","value": "',_metadata.variation,'","type": "string"}]}}'
+ //       );
+ //       return (_rawMetadata, abi.encodePacked(
+ //           "data:application/json;base64,",
+ //           Base64.encode(_rawMetadata)
+ //       ));
     }    
-}
+//}
