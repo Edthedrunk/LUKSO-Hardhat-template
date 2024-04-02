@@ -9,13 +9,21 @@ contract OnChainMetadata {
 
    // string[11] private classes = ["cls-2", "cls-1", "cls-3", "cls-1", "cls-2", "cls-1", "cls-3", "cls-1", "cls-2", "cls-1", "cls-2"];
     //string[11] private paths = [?];
-    
+
+   // pink - ipfs://bafybeiejfn2fahdhjazsvyvahd35226ppk64z6yhwwncwchhixkor7fkhm
+//gold - ipfs://bafybeidalhurheznjrap66fgmnm6gh2svmiioryqwlpzlapjtae764ymzy
+//blue - ipfs://bafybeih4jhcc72q6qphiku6xunedixd3nl67yavnl5yfwbmsuywktjtenu
+//lime - ipfs://bafybeigxma5gbmdbp4am7qkvjltghy6e4advfzq6t4lhdnih2wgnss5ir4
+//orange - ipfs://bafybeia2jgdevfuwxf6kk6p54ho27f7vzmzws7ligp6ox2c34i4lnofdvy
+//black - ipfs://bafybeihczn6p7kgorlourf3ry6loeu2rkjxmjtj7pwdtrbefiwy65ft2dy
+//white - ipfs://bafybeieuhy6xcxmtdpmzv5i6h4ry46s5ikjgpxokesyfnqv6zb7nlqnrcm
     
     struct Metadata {
         string index;
         string blokType;
         string encoded;
         string image;
+        string ipfsURL;
     }
 
     mapping(string => Metadata) public metadata;
@@ -47,7 +55,8 @@ contract OnChainMetadata {
             index: data[0],
             blokType: data[1],
             encoded: data[3],
-            image: data[4]
+            image: data[4],
+            ipfsURL: data[5]
         });
     }
 
@@ -105,10 +114,24 @@ contract OnChainMetadata {
       //      Base64.encode(svg)
       //  );
    // }
+function getMetadataBytes(string memory _blokType) internal view returns (bytes memory, bytes memory) {
+        Metadata memory _metadata = metadata[_blokType];
+        bytes memory _ipfsImage = getImageURL(_blokType);
+        bytes memory _rawMetadata = abi.encodePacked(
+            '{"LSP4Metadata": {"name": "GM Bean","description": "Celebrate being UP early and boost your day with coffee.","links": [],"icon":[],"images": [[{"width": 600,"height": 600,',
+            '"url": "',_ipfsImage,'","verification": {"method": "keccak256(bytes)","data": "',_metadata.encoded,'"}}]],',
+            '"attributes":[{"key": "Type","value": "',_metadata.beanType,'","type": "string"}, {"key": "Variation","value": "',_metadata.variation,'","type": "string"}]}}'
+        );
+        return (_rawMetadata, abi.encodePacked(
+            "data:application/json;base64,",
+            Base64.encode(_rawMetadata)
+        ));
+    }
+
 
    // function getMetadataBytes(string memory _blokType) internal view returns (bytes memory, bytes memory) {
   //      Metadata memory _metadata = metadata[_blokType];
-  //      bytes memory _encodedSVG = renderAndEncodeFromSVG(_beanType);
+  //      bytes memory _ipfsImage = getImageURL(_beanType);
  //       bytes memory _rawMetadata = abi.encodePacked(
  //           '{"LSP4Metadata": {"name": "GM Bean","description": "Celebrate being UP early and boost your day with coffee.","links": [],"icon":[],"images": [[{"width": 600,"height": 600,',
  //           '"url": "',_encodedSVG,'","verification": {"method": "keccak256(bytes)","data": "',_metadata.encoded,'"}}]],',
