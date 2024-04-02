@@ -133,9 +133,9 @@ function getMetadataBytes(string memory _blokType) internal view returns (bytes 
   //      Metadata memory _metadata = metadata[_blokType];
   //      bytes memory _ipfsImage = getImageURL(_beanType);
  //       bytes memory _rawMetadata = abi.encodePacked(
- //           '{"LSP4Metadata": {"name": "GM Bean","description": "Celebrate being UP early and boost your day with coffee.","links": [],"icon":[],"images": [[{"width": 600,"height": 600,',
- //           '"url": "',_encodedSVG,'","verification": {"method": "keccak256(bytes)","data": "',_metadata.encoded,'"}}]],',
-//'"attributes":[{"key": "Type","value": "',_metadata.beanType,'","type": "string"}, {"key": "Variation","value": "',_metadata.variation,'","type": "string"}]}}'
+ //           '{"LSP4Metadata": {"name": "Blok","description": "(_bloktype)","links": [],"icon":[],"images": [[{"width": 600,"height": 600,',
+ //           '"url": "',_ipfsImage,'","verification": {"method": "keccak256(bytes)","data": "',_metadata.encoded,'"}}]],',
+//'"attributes":[{"key": "Type","value": "',_metadata.blokType,'","type": "string"}, {"key": "Variation","value": "',_metadata.variation,'","type": "string"}]}}'
  //       );
  //       return (_rawMetadata, abi.encodePacked(
  //           "data:application/json;base64,",
